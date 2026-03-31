@@ -1,6 +1,6 @@
 # Client-Server-Socket
 
-We make a  Server & Client socket, using the Socket module, and make them communicate over their respective IPs.
+Building a  Server & Client socket, using the Socket module, and making them communicate over their respective IPs.
 
 ## File Structure
 
