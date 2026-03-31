@@ -31,4 +31,4 @@ Then client:
 <img src="s-c-terminal.png">
 
 ## User-Interface
-<img src="s-c1.png" style="width: 700px; height: 500px;"> <img src="s-c2.png" style="width: 700px; height: 500px;">
+<img src="s-c1.png" style="width: 550px; height: 400px;"> <img src="s-c2.png" style="width: 550px; height: 400px;">
