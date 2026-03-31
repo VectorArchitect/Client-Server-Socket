@@ -4,11 +4,11 @@ We make a  Server & Client socket, using the Socket module, and make them commun
 
 ## File Structure
 
-Folder
-|
-|-server_test.py
-|-crc_input.py
-|-streamlit_app.py 
+Folder<br>
+|<br>
+|-server_test.py<br>
+|-crc_input.py<br>
+|-streamlit_app.py<br> 
 
 ## Install streamlit
 use command 
