@@ -26,3 +26,5 @@ Then client:
 ```bash
  streamlit run streamlit_app.py
 ```
+
+<img src="s-c-terminal.png">
