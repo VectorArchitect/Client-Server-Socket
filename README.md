@@ -27,4 +27,9 @@ Then client:
  streamlit run streamlit_app.py
 ```
 
+## Terminal View
 <img src="s-c-terminal.png">
+
+## User-Interface
+<img src="s-c1.png">
+<img src="s-c2.png">
