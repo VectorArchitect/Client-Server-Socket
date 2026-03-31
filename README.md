@@ -4,7 +4,7 @@ We make a  Server & Client socket, using the Socket module, and make them commun
 
 ## File Structure
 
-Folder<br>
+ParentFolder<br>
 |<br>
 |-server_test.py<br>
 |-crc_input.py<br>
