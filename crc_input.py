@@ -64,5 +64,5 @@ if __name__ == "__main__":      #use to run above code in this file but is ignor
             print("❌ Data is Varied!")
     else:
         ldata = len(packet_int) - 1
-        crch, crcl = calcrc(packet_int, ldata)
-        print(f"Calculated → CRCL: {crcl:02X} CRCH: {crch:02X}  ")
+        crcl, crch = calcrc(packet_int, ldata)
+        print(f"Calculated → CRCH: {crch:02X} CRCL: {crcl:02X}  ")
