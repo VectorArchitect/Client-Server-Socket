@@ -56,7 +56,7 @@ if __name__ == "__main__":      #use to run above code in this file but is ignor
         data = packet_int[:6]
         crc = packet_int[6:8]   #puts 7 & 8 th value counting form 1 not 0
         ldata = len(data) - 1
-        crch, crcl = calcrc(data, ldata)
+        crcl, crch = calcrc(data, ldata)
         print(f"Calculated → CRCH: {crch:02X}  CRCL: {crcl:02X}")
         if crc[0] == crch and crc[1] == crcl:
             print("✅ Data is Intact")
