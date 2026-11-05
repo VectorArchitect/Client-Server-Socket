@@ -1,11 +1,13 @@
 import socket
 import streamlit as st
 from crc_input import append_crc, verify_packet
+from socket_utils import recv_exact
 
 st.set_page_config(page_title="Data Monitor", layout="centered")
 
 HOST = "127.0.0.1"
 PORT = 12345
+RESPONSE_PACKET_SIZE = 36  # 34 response-data bytes plus two CRC bytes.
 
 if "sock" not in st.session_state:
     try:
@@ -28,10 +30,12 @@ if st.button("Send Request"):
     if st.session_state.connected:
         try:
             packet = append_crc(bytes(inputs))
-            st.session_state.sock.send(packet)
+            st.session_state.sock.sendall(packet)
             st.session_state.sent_log = packet.hex().upper()
             
-            resp = st.session_state.sock.recv(1024)
+            resp = recv_exact(st.session_state.sock, RESPONSE_PACKET_SIZE)
+            if not resp:
+                raise ConnectionError("Server closed the connection before sending a response.")
             st.session_state.recv_log = resp.hex().upper()
             
             if len(resp) >= 18:
@@ -47,6 +51,9 @@ if st.button("Send Request"):
                         "A1": resp[16], # Buffer 17
                         "A2": resp[17]  # Buffer 18
                     }
+                else:
+                    st.session_state.data_vals = {}
+                    st.error("Response CRC check failed; displayed values were cleared.")
         except Exception as e:
             st.error(f"Comm Error: {e}")
 
