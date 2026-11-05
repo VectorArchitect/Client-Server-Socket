@@ -1,5 +1,6 @@
 import socket
 from crc_input import calcrc, verify_packet
+from socket_utils import recv_exact
 #a1031e000000000000000000000036000002100002ffff00000000f00103c500005469
 
 # ── Response payload (without CRC — server will append it) ──────────────────
@@ -54,6 +55,10 @@ def parse_response(data: bytes):
 
 
 HOST, PORT = '127.0.0.1', 12345
+REQUEST_PACKET_SIZE = 8  # Six request bytes plus the two CRC bytes.
+
+server_socket = None
+client_socket = None
 
 try:
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -66,7 +71,8 @@ try:
     print(f"Connected to client: {address}\n")
 
     while True:
-        raw = client_socket.recv(1024)
+        # TCP may split one packet across recv calls or combine adjacent writes.
+        raw = recv_exact(client_socket, REQUEST_PACKET_SIZE)
         if not raw:
             print("Client disconnected.")
             break
@@ -95,7 +101,7 @@ try:
               f"{response_packet.hex(' ').upper()}")
         print(f"  → Appended CRC: CRCH={resp_crch:02X}  CRCL={resp_crcl:02X}")
 
-        client_socket.send(response_packet)
+        client_socket.sendall(response_packet)
 
         # cont = input("\nKeep server running? (y/n): ").strip().lower()
         # if cont != 'y':
@@ -105,6 +111,7 @@ try:
 except Exception as e:
     print(f"Error: {e}")
 finally:
-    try: client_socket.close()
-    except: pass
-    server_socket.close()
+    if client_socket is not None:
+        client_socket.close()
+    if server_socket is not None:
+        server_socket.close()
