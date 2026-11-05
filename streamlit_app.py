@@ -7,7 +7,7 @@ st.set_page_config(page_title="Data Monitor", layout="centered")
 
 HOST = "127.0.0.1"
 PORT = 12345
-RESPONSE_PACKET_SIZE = 36  # 34 response-data bytes plus two CRC bytes.
+RESPONSE_PACKET_SIZE = 37  # 35 response-data bytes plus two CRC bytes.
 
 if "sock" not in st.session_state:
     try:
