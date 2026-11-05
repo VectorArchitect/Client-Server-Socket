@@ -30,7 +30,7 @@ streamlit run streamlit_app.py
 ```
 
 The client sends an 8-byte request (6 data bytes plus CRC) and reads the
-36-byte server response (34 data bytes plus CRC). The shared socket helper
+37-byte server response (35 data bytes plus CRC). The shared socket helper
 handles fragmented TCP reads so incomplete packets are not parsed as complete
 responses.
 
