@@ -91,7 +91,7 @@ try:
 
         # ── Send response ─────────────────────────────────────────────────────
         # Append fresh CRC to the response data before sending
-        data_only   = RESPONSE_DATA        # 34 bytes (no CRC yet)
+        data_only   = RESPONSE_DATA        # 35 bytes (no CRC yet)
         data_list   = list(data_only)
         ldata       = len(data_list) - 1
         resp_crch, resp_crcl = calcrc(data_list, ldata)
