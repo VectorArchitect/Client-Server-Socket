@@ -9,14 +9,15 @@ HOST = "127.0.0.1"
 PORT = 12345
 RESPONSE_PACKET_SIZE = 37  # 35 response-data bytes plus two CRC bytes.
 
-if "sock" not in st.session_state:
+if not st.session_state.get("connected", False):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(2)
         s.connect((HOST, PORT))
         st.session_state.sock, st.session_state.connected = s, True
-    except:
+    except OSError as e:
         st.session_state.sock, st.session_state.connected = None, False
+        st.warning(f"Unable to connect to server: {e}")
 
 if "sent_log" not in st.session_state: st.session_state.sent_log = ""
 if "recv_log" not in st.session_state: st.session_state.recv_log = ""
@@ -54,6 +55,15 @@ if st.button("Send Request"):
                 else:
                     st.session_state.data_vals = {}
                     st.error("Response CRC check failed; displayed values were cleared.")
+        except OSError as e:
+            # A timeout or truncated packet can leave the TCP stream out of sync.
+            sock = st.session_state.get("sock")
+            if sock is not None:
+                sock.close()
+            st.session_state.sock = None
+            st.session_state.connected = False
+            st.session_state.data_vals = {}
+            st.error(f"Comm Error: {e}. The next interaction will retry the connection.")
         except Exception as e:
             st.error(f"Comm Error: {e}")
 
