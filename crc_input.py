@@ -1,3 +1,25 @@
+def encode_request_data(values):
+    """Encode the six integer fields used by the request packet as bytes.
+
+    The TCP protocol sends six data bytes followed by a two-byte CRC. Keep
+    validation here so callers outside the Streamlit UI cannot accidentally
+    construct a malformed request.
+    """
+    values = list(values)
+    if len(values) != 6:
+        raise ValueError("A request must contain exactly six data bytes.")
+
+    encoded = []
+    for index, value in enumerate(values, start=1):
+        if isinstance(value, bool) or not isinstance(value, int):
+            raise TypeError("Input {} must be an integer.".format(index))
+        if not 0 <= value <= 255:
+            raise ValueError("Input {} must be between 0 and 255.".format(index))
+        encoded.append(value)
+
+    return bytes(encoded)
+
+
 #this particular file acts as a library not just a program used by other 2 programs
 # CRC-16 | Polynomial = 0xA001
 
