@@ -30,9 +30,11 @@ streamlit run streamlit_app.py
 ```
 
 The client sends an 8-byte request (6 data bytes plus CRC) and reads the
-37-byte server response (35 data bytes plus CRC). The shared socket helper
-handles fragmented TCP reads so incomplete packets are not parsed as complete
-responses.
+37-byte server response (35 data bytes plus CRC). Each of the six request
+fields is an unsigned byte (0–255); `encode_request_data()` validates the
+field count, integer type, and byte range before the CRC is appended. The
+shared socket helper handles fragmented TCP reads so incomplete packets are
+not parsed as complete responses.
 
 ## Tests
 
