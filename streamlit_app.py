@@ -1,6 +1,6 @@
 import socket
 import streamlit as st
-from crc_input import append_crc, verify_packet
+from crc_input import append_crc, encode_request_data, verify_packet
 from socket_utils import recv_exact
 
 st.set_page_config(page_title="Data Monitor", layout="centered")
@@ -25,12 +25,12 @@ if "data_vals" not in st.session_state: st.session_state.data_vals = {}
 
 st.write("### Decimal Input")
 cols_in = st.columns(6)
-inputs = [cols_in[i].number_input(f"In {i+1}", value=0, key=f"n{i}") for i in range(6)]
+inputs = [cols_in[i].number_input(f"In {i+1}", min_value=0, max_value=255, value=0, step=1, key=f"n{i}") for i in range(6)]
 
 if st.button("Send Request"):
     if st.session_state.connected:
         try:
-            packet = append_crc(bytes(inputs))
+            packet = append_crc(encode_request_data(inputs))
             st.session_state.sock.sendall(packet)
             st.session_state.sent_log = packet.hex().upper()
             
